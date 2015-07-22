@@ -3,8 +3,12 @@ package com.example.jason.stttest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
+import android.speech.SpeechRecognizer;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,23 +16,26 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class stttest extends Activity {
-    public static final int TYPE_PHONE=2003;
+    private SpeechRecognizer sr;
+    private static final String TAG = "stttest";
     ImageButton img_btn=null;
     WindowManager wm=null;
     WindowManager.LayoutParams wmParams=null;
-    private final int REQ_CODE_SPEECH_INPUT = 100;
+    private final int REQ_CODE_SPEECH_INPUT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sr = SpeechRecognizer.createSpeechRecognizer(this);
+        sr.setRecognitionListener(new listener());
+
         if(wm==null){
             createView();
         }
@@ -44,15 +51,15 @@ public class stttest extends Activity {
         img_btn.setBackgroundResource(R.drawable.heart);
         wm = (WindowManager)getApplicationContext().getSystemService(WINDOW_SERVICE);
         wmParams = new WindowManager.LayoutParams();
-        wmParams.type=TYPE_PHONE;// ∫}ØBºh¶∏
-        wmParams.format=1;
-        wmParams.flags=40; // §U≥o≠”§~•i•H≤æ∞ ≠I¥∫
-        wmParams.width=150;// ≥]©wIBºe´◊
-        wmParams.height=150;//≥]©wIB∞™´◊
-        wmParams.gravity= Gravity.LEFT| Gravity.TOP;// ≥]©wÆyº–™∫∞Ú∑«•™§W
-        wmParams.x=100;// ™Ï©lx¶Ï∏m
-        wmParams.y=100; //™Ï©ly¶Ï∏m
-        wm.addView(img_btn, wmParams);// ±NIBªPwmParam•[§Jwm§§
+        wmParams.type=WindowManager.LayoutParams.TYPE_PHONE;// ÊºÇÊµÆÂ±§Ê¨°
+        wmParams.format= PixelFormat.RGBA_8888;//ÈÄèÊòéÊåâÈçµ
+        wmParams.flags=WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE; // ‰∏ãÈÄôÂÄãÊâçÂèØ‰ª•ÁßªÂãïËÉåÊôØ
+        wmParams.gravity= Gravity.LEFT| Gravity.TOP;// Ë®≠ÂÆöÂ∫ßÊ®ôÁöÑÂü∫Ê∫ñÂ∑¶‰∏ä
+        wmParams.width=150;// Ë®≠ÂÆöIBÂØ¨Â∫¶
+        wmParams.height=150;//Ë®≠ÂÆöIBÈ´òÂ∫¶
+        wmParams.x=100;// ÂàùÂßãx‰ΩçÁΩÆ
+        wmParams.y=100; //ÂàùÂßãy‰ΩçÁΩÆ
+        wm.addView(img_btn, wmParams);// Â∞áIBËàáwmParamÂä†ÂÖ•wm‰∏≠
 
         img_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -91,20 +98,30 @@ public class stttest extends Activity {
     }
 
     private void promptSpeechInput() {
+        /*
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"en-US");
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hey Dude What's up!");
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,"en-US");
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,1);
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
             Toast.makeText(getApplicationContext(),getString(R.string.speech_not_supported),Toast.LENGTH_SHORT).show();
-        }
+        }*/
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
+
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,3);
+        sr.startListening(intent);
+        Log.d(TAG, "startListening");
     }
 
+    
     /**
      * Receiving speech input
      * */
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -121,6 +138,18 @@ public class stttest extends Activity {
             }
         }
     }
+*/
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
 
     private void casetest(String resultmsg) {
         if(resultmsg!=null){
@@ -131,42 +160,56 @@ public class stttest extends Activity {
                     goIntent.setClass(this, cameratest.class);
                     startActivity(goIntent);
                     break;
+                case "goodbye":
+                    android.os.Process.killProcess(android.os.Process.myPid());
 
-                //Todo other case
+                    //Todo other case
             }
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_stttest, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    // todo imagebutton animation onRmsChanged !
+    class listener implements RecognitionListener
+    {
+        public void onReadyForSpeech(Bundle params)
+        {
+            Log.d(TAG, "onReadyForSpeech");
         }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+        public void onBeginningOfSpeech()
+        {
+            Log.d(TAG, "onBeginningOfSpeech");
+        }
+        public void onRmsChanged(float rmsdB)
+        {
+            Log.d(TAG, "onRmsChanged");
+        }
+        public void onBufferReceived(byte[] buffer)
+        {
+            Log.d(TAG, "onBufferReceived");
+        }
+        public void onEndOfSpeech()
+        {
+            Log.d(TAG, "onEndofSpeech");
+        }
+        public void onError(int error)
+        {
+            Log.d(TAG, "error " + error);
+        }
+        public void onResults(Bundle results)
+        {
+            Log.d(TAG, "onResults " + results);
+            ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            String str=(String)data.get(0);
+            casetest(str);
+        }
+        public void onPartialResults(Bundle partialResults)
+        {
+            Log.d(TAG, "onPartialResults");
+        }
+        public void onEvent(int eventType, Bundle params)
+            {
+            Log.d(TAG, "onEvent " + eventType);
+        }
     }
 
 }
