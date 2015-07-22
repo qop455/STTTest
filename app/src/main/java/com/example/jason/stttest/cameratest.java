@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 
 
 /**
@@ -40,5 +41,17 @@ public class cameratest extends Activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+    }
+
+    @Override
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                finish();
+                return false;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }
