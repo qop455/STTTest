@@ -4,15 +4,16 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoDisplay">
+        android:label="@string/app_name">
         <activity
             android:name=".stttest"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,6 +22,10 @@
         </activity>
         <activity android:name=".cameratest"
             android:label="@string/app_name" />
+        <activity android:name=".tubetest"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoDisplay" />
+        <service android:name=".servicetest" ></service>
     </application>
 
 </manifest>

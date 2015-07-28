@@ -2,6 +2,4 @@
 <resources>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="bg_gradient_start">#31244e</color>
-    <color name="bg_gradient_end">#6b394c</color>
 </resources>
