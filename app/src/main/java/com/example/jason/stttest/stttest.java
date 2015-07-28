@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.media.AudioManager;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
@@ -37,10 +38,35 @@ public class stttest extends Activity {
     private int yC=100;
     private boolean isListen=false;
 
+    private void casetest(String resultmsg) {
+        if(resultmsg!=null){
+            Toast.makeText(stttest.this, resultmsg, Toast.LENGTH_SHORT).show();
+            switch (resultmsg){
+                case "camera":
+                    startActivity(new Intent(this,cameratest.class));
+                    this.finish();
+                    break;
+                case "tube":
+                    startActivity(new Intent(this,tubetest.class));
+                    this.finish();
+                    break;
+                case "listen":
+                    if(sr!=null){
+                        sr.destroy();
+                    }
+                    startService(new Intent(this, servicetest.class));
+                    this.finish();
+                    break;
+                case "goodbye":
+                    this.finish();
+                    break;
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         sr = SpeechRecognizer.createSpeechRecognizer(this);
         sr.setRecognitionListener(new listener());
 
@@ -48,7 +74,6 @@ public class stttest extends Activity {
             createView();
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -163,32 +188,6 @@ public class stttest extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    private void casetest(String resultmsg) {
-        if(resultmsg!=null){
-            Toast.makeText(stttest.this, resultmsg, Toast.LENGTH_SHORT).show();
-            switch (resultmsg){
-                case "camera":
-                    startActivity(new Intent(this,cameratest.class));
-                    this.finish();
-                    break;
-                case "tube":
-                    startActivity(new Intent(this,tubetest.class));
-                    this.finish();
-                    break;
-                case "listen":
-                    if(sr!=null){
-                        sr.destroy();
-                    }
-                    startService(new Intent(this, servicetest.class));
-                    this.finish();
-                    break;
-                case "goodbye":
-                    this.finish();
-                    break;
-            }
-        }
     }
 
     class listener implements RecognitionListener

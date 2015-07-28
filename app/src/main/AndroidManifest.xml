@@ -11,7 +11,7 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name">
         <activity
-            android:name=".stttest"
+            android:name=".tubetest"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".cameratest"
             android:label="@string/app_name" />
-        <activity android:name=".tubetest"
+        <activity android:name=".stttest"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoDisplay" />
         <service android:name=".servicetest" ></service>

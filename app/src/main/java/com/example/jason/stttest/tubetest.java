@@ -3,6 +3,7 @@ package com.example.jason.stttest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.PixelFormat;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,15 +29,17 @@ public class tubetest extends YouTubeBaseActivity implements YouTubePlayer.OnIni
     YouTubePlayerView youTubePlayerView ;
     WindowManager wm=null;
     WindowManager.LayoutParams wmParams=null;
-    int xLast=0;
-    int yLast=0;
-    int xC =0;
-    int yC =0;
+    public int xLast=0;
+    public int yLast=0;
+    public int xC =60;
+    public int yC =40;
     private boolean isMoving= false;
+    private boolean isFirst =true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         Log.i(TAG, "onCreate");
         if(wm==null){
             createView();
@@ -84,18 +87,18 @@ public class tubetest extends YouTubeBaseActivity implements YouTubePlayer.OnIni
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     isMoving = true;
-                    Log.i("isMoving:", "true");
-                    if (xLast != 0 && yLast != 0) {
-                        xC += (int) event.getRawX() - xLast;
-                        yC += (int) event.getRawY() - yLast;
+                    if(!isFirst){
+                        xC = xC + (int) event.getRawX() - xLast;
+                        yC = yC + (int) event.getRawY() - yLast;
                         updateView(xC, yC);
                     }
                     xLast = (int) event.getRawX();
                     yLast = (int) event.getRawY();
+                    isFirst=false;
                 }
                 if(event.getAction()==MotionEvent.ACTION_UP){
                     isMoving=false;
-                    Log.i("isMoving:","false");
+                    isFirst =true;
                 }
                 return false;
             }
