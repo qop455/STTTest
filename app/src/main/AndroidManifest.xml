@@ -20,11 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".realtubetest"
+            android:label="@string/app_name" />
         <activity android:name=".cameratest"
             android:label="@string/app_name" />
         <activity android:name=".stttest"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:label="@string/app_name" />
         <service android:name=".servicetest" ></service>
     </application>
 

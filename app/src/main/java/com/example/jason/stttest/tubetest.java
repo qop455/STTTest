@@ -1,12 +1,14 @@
 package com.example.jason.stttest;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,6 +24,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
  */
 
 public class tubetest extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+    AudioManager audio;
     private static final String TAG = "tubetest";
     public static final String API_KEY = "AIzaSyASBYXyMiX27kdbzD0BP8KV6uNPGAnESdw";
     public static final String VIDEO_ID = "2zNSgSzhBfM";
@@ -39,7 +42,7 @@ public class tubetest extends YouTubeBaseActivity implements YouTubePlayer.OnIni
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         Log.i(TAG, "onCreate");
         if(wm==null){
             createView();
@@ -214,4 +217,20 @@ public class tubetest extends YouTubeBaseActivity implements YouTubePlayer.OnIni
         public void onVideoStarted() {
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                return true;
+            default:
+                return false;
+        }
+    }
 }
