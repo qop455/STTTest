@@ -1,27 +1,26 @@
 package com.example.jason.stttest;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.media.AudioManager;
+import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
-import android.os.Bundle;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class stttest extends Activity {
@@ -37,6 +36,48 @@ public class stttest extends Activity {
     private int xC=100;
     private int yC=100;
     private boolean isListen=false;
+    private static final int NOTI_ID =100;
+
+    Timer timer = new Timer();
+    TimerTask timerTask;
+    final Handler handler = new Handler();
+
+    //==============================
+
+
+    public void startTimer(){
+        initalizeTimerTask();
+        //start after first 1000ms ,then the timertask run every 7000ms
+        timer.schedule(timerTask,1000,7000);
+    }
+
+    public void stopTimerTask(){
+        //stop timer if its not already null
+        if ( timer != null)
+        {
+            timer.cancel();
+            timer = null;
+        }
+    }
+    public void initalizeTimerTask(){
+        timerTask =new TimerTask() {
+            @Override
+            public void run() {
+                //use handler to run
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                            SpeechListening();
+
+                    }
+                });
+            }
+        };
+    }
+
+
+
+
 
     private void casetest(String resultmsg) {
         if(resultmsg!=null){
@@ -73,6 +114,7 @@ public class stttest extends Activity {
         if(wm==null){
             createView();
         }
+        showNotification("程式執行中....");
     }
     @Override
     protected void onResume() {
@@ -114,10 +156,17 @@ public class stttest extends Activity {
             @Override
             public void onClick(View v) {
                 if (!isListen) {
-                    SpeechListening();
+                    startTimer();
                 } else {
                     StopListening();
                 }
+            }
+        });
+        img_btn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                    StopListening();
+                return false;
             }
         });
     }
@@ -125,6 +174,7 @@ public class stttest extends Activity {
     private void StopListening() {
         Toast.makeText(stttest.this,"Stop listening.",Toast.LENGTH_SHORT).show();
         sr.stopListening();
+        stopTimerTask();
         Log.d(TAG, "stopListening");
     }
 
@@ -133,7 +183,7 @@ public class stttest extends Activity {
         wmParams.y=y;
         wm.updateViewLayout(img_btn, wmParams);
     }
-        /**
+/*
     private void promptSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hey Dude What's up!");
@@ -144,8 +194,8 @@ public class stttest extends Activity {
         } catch (ActivityNotFoundException a) {
             Toast.makeText(getApplicationContext(),getString(R.string.speech_not_supported),Toast.LENGTH_SHORT).show();
     }
-}**/
 
+*/
     private void SpeechListening(){
         isListen=true;
         Toast.makeText(stttest.this,"I'm listening.",Toast.LENGTH_SHORT).show();
@@ -183,12 +233,28 @@ public class stttest extends Activity {
     protected void onStop() {
         super.onStop();
         wm.removeViewImmediate(img_btn);
+        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(NOTI_ID);
     }
+
+    private  void  showNotification(String sMsg){
+        Notification noti = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.icon)
+                .setTicker(sMsg)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(sMsg)
+                .build();
+        NotificationManager notificationManager =(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTI_ID,noti);
+    }
+
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
+
+
 
     class listener implements RecognitionListener
     {
