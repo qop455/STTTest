@@ -25,9 +25,9 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 public class tubetest extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
     AudioManager audio;
-    private static final String TAG = "tubetest";
-    public static final String API_KEY = "AIzaSyASBYXyMiX27kdbzD0BP8KV6uNPGAnESdw";
-    public static final String VIDEO_ID = "2zNSgSzhBfM";
+    private final String TAG = this.getLocalClassName();
+    public final String API_KEY = this.getString(R.string.developer_key);
+    public final String VIDEO_ID = this.getString(R.string.vedio_id);
 
     YouTubePlayerView youTubePlayerView ;
     WindowManager wm=null;

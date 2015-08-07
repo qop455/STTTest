@@ -10,7 +10,7 @@ import android.os.Bundle;
  * Created by Jason on 2015/7/30.
  */
 public class realtubetest extends Activity{
-    public static final String VIDEO_ID = "2zNSgSzhBfM";
+    public final String VIDEO_ID = this.getString(R.string.vedio_id);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
