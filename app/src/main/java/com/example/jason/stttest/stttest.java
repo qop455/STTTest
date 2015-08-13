@@ -22,15 +22,14 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class stttest extends Activity {
     private SpeechRecognizer sr;
     private static final String TAG = "stttest";
     ImageButton img_btn=null;
     WindowManager wm=null;
     WindowManager.LayoutParams wmParams=null;
-    private final int REQ_CODE_SPEECH_INPUT = 1;
-    private static final int RECOVERY_DIALOG_REQUEST = 10;
+    //private final int REQ_CODE_SPEECH_INPUT = 1;
+    //private static final int RECOVERY_DIALOG_REQUEST = 10;
     private int xLast=0;
     private int yLast=0;
     private int xC=100;
@@ -43,7 +42,6 @@ public class stttest extends Activity {
     final Handler handler = new Handler();
 
     //==============================
-
 
     public void startTimer(){
         initalizeTimerTask();
@@ -74,10 +72,6 @@ public class stttest extends Activity {
             }
         };
     }
-
-
-
-
 
     private void casetest(String resultmsg) {
         if(resultmsg!=null){
@@ -194,7 +188,6 @@ public class stttest extends Activity {
         } catch (ActivityNotFoundException a) {
             Toast.makeText(getApplicationContext(),getString(R.string.speech_not_supported),Toast.LENGTH_SHORT).show();
     }
-
 */
     private void SpeechListening(){
         isListen=true;
@@ -206,7 +199,6 @@ public class stttest extends Activity {
         sr.startListening(intent);
         Log.d(TAG, "startListening");
     }
-
 
     /**
      * Receiving speech input
@@ -236,7 +228,7 @@ public class stttest extends Activity {
         ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(NOTI_ID);
     }
 
-    private  void  showNotification(String sMsg){
+    private void showNotification(String sMsg){
         Notification noti = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.icon)
                 .setTicker(sMsg)
@@ -247,14 +239,10 @@ public class stttest extends Activity {
         notificationManager.notify(NOTI_ID,noti);
     }
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
-
-
 
     class listener implements RecognitionListener
     {
