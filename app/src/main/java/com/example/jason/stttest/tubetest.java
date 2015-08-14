@@ -26,8 +26,8 @@ import com.google.android.youtube.player.YouTubePlayerView;
 public class tubetest extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
     AudioManager audio;
     private final String TAG = this.getLocalClassName();
-    public final String API_KEY = this.getString(R.string.developer_key);
-    public final String VIDEO_ID = this.getString(R.string.vedio_id);
+    public final String API_KEY = DeveloperKey.DEVELOPER_KEY;
+    public final String VIDEO_ID = DeveloperKey.VIDEO_ID;
 
     YouTubePlayerView youTubePlayerView ;
     WindowManager wm=null;

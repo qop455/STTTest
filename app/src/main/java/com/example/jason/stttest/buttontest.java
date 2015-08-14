@@ -20,8 +20,8 @@ import com.google.android.youtube.player.YouTubePlayerView;
  */
 public class buttontest extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener,View.OnClickListener{
     private static final int RECOVERY_DIALOG_REQUEST = 1;
-    public final String API_KEY = "AIzaSyASBYXyMiX27kdbzD0BP8KV6uNPGAnESdw";
-    public final String VIDEO_ID = "2zNSgSzhBfM";
+    public final String API_KEY = DeveloperKey.DEVELOPER_KEY;
+    public final String VIDEO_ID = DeveloperKey.VIDEO_ID;
     private YouTubePlayerView youTubeView;
     private YouTubePlayer player;
     private ImageButton play;

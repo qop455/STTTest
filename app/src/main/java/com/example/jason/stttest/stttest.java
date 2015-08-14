@@ -41,10 +41,8 @@ public class stttest extends Activity {
     TimerTask timerTask;
     final Handler handler = new Handler();
 
-    //==============================
-
     public void startTimer(){
-        initalizeTimerTask();
+        initializeTimerTask();
         //start after first 1000ms ,then the timertask run every 7000ms
         timer.schedule(timerTask,1000,7000);
     }
@@ -57,7 +55,7 @@ public class stttest extends Activity {
             timer = null;
         }
     }
-    public void initalizeTimerTask(){
+    public void initializeTimerTask(){
         timerTask =new TimerTask() {
             @Override
             public void run() {
