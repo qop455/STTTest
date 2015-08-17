@@ -50,6 +50,41 @@
                     android:src="@android:drawable/ic_media_pause" />
             </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:src="@drawable/ic_normal" />
+
+                <ImageButton
+                    android:id="@+id/vibrete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:src="@drawable/ic_silent" />
+
+                <ImageButton
+                    android:id="@+id/volume_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:src="@drawable/ic_up" />
+
+                <ImageButton
+                    android:id="@+id/volume_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:src="@drawable/ic_down" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
