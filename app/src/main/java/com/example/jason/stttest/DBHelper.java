@@ -20,6 +20,7 @@ import java.util.Locale;
 public class DBHelper extends SQLiteOpenHelper {
     private final static String _DBName = "MyDB";
     private final static int _DBVersion = 1;
+    private static SQLiteDatabase database;
     private final static String _TableName = "MyCommand";
     private final static String TAG= "DBhelper";
 
@@ -30,6 +31,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+    }
+
+
+    public static SQLiteDatabase getDatabase(Context context){
+        if(database ==null || !database.isOpen()){
+            database = new DBHelper(context,_DBName,null,_DBVersion).getWritableDatabase();
+        }
+        return  database;
     }
 
     @Override
