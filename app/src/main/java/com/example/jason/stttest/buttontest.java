@@ -80,13 +80,16 @@ public class buttontest extends YouTubeBaseActivity implements YouTubePlayer.OnI
         this.player=youTubePlayer;
         player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
         if (!wasRestored) {
-            // loadVideo() will auto play video
+            // loadVideo() will auto play videopackage 
             // Use cueVideo() method, if you don't want to play it automatically
             player.loadVideo(VIDEO_ID);
 
             // Hiding player controls
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
         }
+ 
+
+
     }
 
     @Override
